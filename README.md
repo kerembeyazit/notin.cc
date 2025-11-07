@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# notin
 
-## Getting Started
+Modern ve basit bir not alma uygulaması. Next.js, shadcn/ui ve LocalStorage kullanılarak geliştirilmiştir.
 
-First, run the development server:
+## Özellikler
+
+- ✨ Modern ve temiz arayüz
+- 📝 Sınırsız not oluşturma
+- 💾 LocalStorage ile otomatik kaydetme
+- 🎨 shadcn/ui ile güzel tasarım
+- 🚀 Hızlı ve responsive
+- 🌙 Dark mode desteği
+
+## Kullanılan Teknolojiler
+
+- [Next.js 15](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Tip güvenliği
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [shadcn/ui](https://ui.shadcn.com/) - UI bileşenleri
+- [Lucide Icons](https://lucide.dev/) - İkonlar
+
+## Kurulum
+
+1. Bağımlılıkları yükleyin:
+
+```bash
+npm install
+```
+
+2. Geliştirme sunucusunu başlatın:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Tarayıcınızda açın:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Kullanım
 
-## Learn More
+1. **Yeni Not Oluşturma**: Sol üst köşedeki "Yeni Not" butonuna tıklayın
+2. **Not Düzenleme**: Bir notu seçin ve sağ taraftaki editörde düzenleyin
+3. **Not Silme**: Not üzerine geldiğinizde görünen çöp kutusu ikonuna tıklayın
+4. **Otomatik Kaydetme**: Tüm değişiklikler otomatik olarak LocalStorage'a kaydedilir
 
-To learn more about Next.js, take a look at the following resources:
+## Proje Yapısı
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+notes-app/
+├── app/
+│   ├── layout.tsx        # Ana layout
+│   ├── page.tsx          # Ana sayfa
+│   └── globals.css       # Global stiller
+├── components/
+│   ├── NoteSidebar.tsx   # Sol panel (not listesi)
+│   ├── NoteEditor.tsx    # Sağ panel (not editörü)
+│   └── ui/               # shadcn/ui bileşenleri
+├── hooks/
+│   └── useLocalStorage.ts # LocalStorage hook'u
+├── types/
+│   └── note.ts           # TypeScript tipleri
+└── lib/
+    └── utils.ts          # Yardımcı fonksiyonlar
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Özelleştirme
 
-## Deploy on Vercel
+### Renkler
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`app/globals.css` dosyasında CSS değişkenlerini düzenleyerek renk paletini özelleştirebilirsiniz.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Bileşenler
+
+shadcn/ui bileşenleri `components/ui/` klasöründe bulunur ve tamamen özelleştirilebilir.
+
+## Geliştirme
+
+```bash
+# Geliştirme modu
+npm run dev
+
+# Production build
+npm run build
+
+# Production sunucusu
+npm start
+
+# Linting
+npm run lint
+```
+
+## Lisans
+
+MIT
+
+## Katkıda Bulunma
+
+Pull request'ler kabul edilir. Büyük değişiklikler için lütfen önce bir issue açın.
