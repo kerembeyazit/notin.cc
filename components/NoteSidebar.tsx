@@ -81,9 +81,9 @@ export function NoteSidebar({
           w-80 border-r flex flex-col h-screen
           fixed inset-y-0 left-0 z-50
           transform transition-transform duration-300 ease-in-out
+          bg-background md:bg-transparent
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
-        style={{ backgroundColor: 'transparent' }}
       >
         <div className="p-4 border-b flex-shrink-0">
           <div className="flex items-center justify-between mb-4">
