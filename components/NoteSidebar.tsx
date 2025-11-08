@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTheme } from '@/hooks/useTheme';
-import { Plus, FileText, Trash2, X, Moon, Sun, Search } from 'lucide-react';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Plus, FileText, Trash2, X, Moon, Sun, Search, List } from 'lucide-react';
 
 interface NoteSidebarProps {
   notes: Note[];
@@ -30,6 +31,8 @@ export function NoteSidebar({
 }: NoteSidebarProps) {
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCompact, setIsCompact] = useLocalStorage<boolean>('compactMode', false);
+  const compactValue = typeof isCompact === 'boolean' ? isCompact : false;
   
   const filteredNotes = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -105,16 +108,27 @@ export function NoteSidebar({
               style={{ backgroundColor: 'transparent' }}
             />
           </div>
-          <p className="text-sm text-muted-foreground">
-            {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
-            {searchQuery && filteredNotes.length !== notes.length && (
-              <span className="ml-1">of {notes.length}</span>
-            )}
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
+              {searchQuery && filteredNotes.length !== notes.length && (
+                <span className="ml-1">of {notes.length}</span>
+              )}
+            </p>
+            <Button 
+              onClick={() => setIsCompact(!compactValue)} 
+              size="sm" 
+              variant="ghost" 
+              className="h-7 w-7 p-0"
+              title={compactValue ? 'Expand view' : 'Compact view'}
+            >
+              <List className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
       <ScrollArea className="flex-1 h-0">
-        <div className="p-2 space-y-2">
+        <div className={`p-2 ${compactValue ? 'space-y-1' : 'space-y-2'}`}>
           {filteredNotes.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -123,31 +137,23 @@ export function NoteSidebar({
             </div>
           ) : (
             filteredNotes.map((note) => (
-              <Card
-                key={note.id}
-                className={`p-3 cursor-pointer transition-all hover:shadow-md group ${
-                  selectedNoteId === note.id
-                    ? 'border-primary bg-primary/5'
-                    : 'hover:bg-muted/50'
-                }`}
-                onClick={() => onSelectNote(note.id)}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium truncate mb-1">
-                      {note.title || 'Untitled Note'}
-                    </h3>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {note.content || 'No content'}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {formatDate(note.updatedAt)}
-                    </p>
-                  </div>
+              compactValue ? (
+                <div
+                  key={note.id}
+                  className={`py-1.5 px-2 rounded cursor-pointer transition-colors group flex items-center justify-between ${
+                    selectedNoteId === note.id
+                      ? 'bg-muted/50'
+                      : 'hover:bg-muted/30'
+                  }`}
+                  onClick={() => onSelectNote(note.id)}
+                >
+                  <h3 className="text-sm font-medium truncate flex-1 min-w-0">
+                    {note.title || 'Untitled Note'}
+                  </h3>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="opacity-0 group-hover:opacity-100 ml-2 h-8 w-8 p-0"
+                    className="opacity-0 group-hover:opacity-100 ml-2 h-6 w-6 p-0 flex-shrink-0"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (window.confirm('Are you sure you want to delete this note?')) {
@@ -155,10 +161,47 @@ export function NoteSidebar({
                       }
                     }}
                   >
-                    <Trash2 className="h-4 w-4 text-destructive" />
+                    <Trash2 className="h-3 w-3 text-destructive" />
                   </Button>
                 </div>
-              </Card>
+              ) : (
+                <Card
+                  key={note.id}
+                  className={`p-3 cursor-pointer transition-all hover:shadow-md group ${
+                    selectedNoteId === note.id
+                      ? 'border-primary bg-primary/5'
+                      : 'hover:bg-muted/50'
+                  }`}
+                  onClick={() => onSelectNote(note.id)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium truncate mb-1">
+                        {note.title || 'Untitled Note'}
+                      </h3>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {note.content || 'No content'}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {formatDate(note.updatedAt)}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="opacity-0 group-hover:opacity-100 ml-2 h-8 w-8 p-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm('Are you sure you want to delete this note?')) {
+                          onDeleteNote(note.id);
+                        }
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                </Card>
+              )
             ))
           )}
         </div>
