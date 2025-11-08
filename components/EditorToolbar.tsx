@@ -13,7 +13,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Download } from 'lucide-react';
+import { Download, DownloadCloud } from 'lucide-react';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
 
 const textSizes = [
   { value: 'sm', label: 'Small', size: '0.875rem' },
@@ -45,6 +46,7 @@ export function EditorToolbar({
 }: EditorToolbarProps) {
   const textSizeValue = textSize || 'base';
   const fontFamilyValue = fontFamily || 'sans';
+  const { isInstallable, install } = usePWAInstall();
 
   return (
     <div className="absolute top-3 right-3 md:top-6 md:right-6 flex items-center gap-2 z-10">
@@ -105,6 +107,23 @@ export function EditorToolbar({
           <p>Export as TXT</p>
         </TooltipContent>
       </Tooltip>
+      {isInstallable && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={install}
+              variant="outline"
+              size="sm"
+              className="flex-shrink-0"
+            >
+              <DownloadCloud className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Install App</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
     </div>
   );
 }

@@ -95,6 +95,10 @@ notin can be installed as a Progressive Web App on your device:
 2. Tap the menu (three dots)
 3. Select "Add to Home Screen" or "Install App"
 
+**Firefox:**
+- **Android Firefox**: PWA installation is supported. Use the menu → "Add to Home Screen"
+- **Desktop Firefox**: PWA installation is not yet fully supported, but Service Worker works for offline functionality. For full PWA support, consider using Chrome/Edge or wait for Firefox's upcoming PWA features.
+
 Once installed, notin will:
 - Open in standalone mode (like a native app)
 - Work offline (with cached content)
