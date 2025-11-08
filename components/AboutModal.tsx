@@ -19,8 +19,10 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
       <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            notin is a simple note-taking application and works entirely in your browser. 
-            All your notes are saved locally on your device.
+            notin is a modern, privacy-focused note-taking app that runs entirely in your browser. 
+            Built with Next.js and shadcn/ui, it offers a clean, distraction-free writing experience. 
+            All notes are saved locally, ensuring privacy and offline functionality. 
+            Features include dark mode, customizable fonts, search, and export.
           </p>
           <p className="text-sm font-semibold mb-2">Version</p>
           <p className="text-sm text-muted-foreground">0.1.0</p>
