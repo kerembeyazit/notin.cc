@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Note } from '@/types/note';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { FileText, Github, Menu, Download, Type } from 'lucide-react';
+import { FileText, Github, Menu, Download, Type, Mail } from 'lucide-react';
 
 interface NoteEditorProps {
   note: Note | null;
@@ -47,15 +46,24 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
           <span className="flex-1">
             notin is a simple note-taking application and works entirely in your browser. Your notes are saved to your device.
           </span>
-          <a
-            href="https://github.com/kerembeyazit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sm:ml-4 hover:text-foreground transition-colors flex-shrink-0"
-            aria-label="GitHub"
-          >
-            <Github className="h-4 w-4" />
-          </a>
+          <div className="flex items-center gap-3 sm:ml-4 flex-shrink-0">
+            <a
+              href="mailto:cerembeyazit@gmail.com?subject=notin"
+              className="hover:text-foreground transition-colors"
+              aria-label="Email"
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+            <a
+              href="https://github.com/kerembeyazit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+              aria-label="GitHub"
+            >
+              <Github className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -152,15 +160,24 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
         <span className="flex-1">
           notin is a simple note-taking application and works entirely in your browser. Your notes are saved to your device.
         </span>
-        <a
-          href="https://github.com/kerembeyazit"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="sm:ml-4 hover:text-foreground transition-colors flex-shrink-0"
-          aria-label="GitHub"
-        >
-          <Github className="h-4 w-4" />
-        </a>
+        <div className="flex items-center gap-3 sm:ml-4 flex-shrink-0">
+          <a
+            href="mailto:cerembeyazit@gmail.com?subject=notin"
+            className="hover:text-foreground transition-colors"
+            aria-label="Email"
+          >
+            <Mail className="h-4 w-4" />
+          </a>
+          <a
+            href="https://github.com/kerembeyazit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground transition-colors"
+            aria-label="GitHub"
+          >
+            <Github className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </div>
   );

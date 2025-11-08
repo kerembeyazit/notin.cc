@@ -1,99 +1,136 @@
 # notin
 
-Modern ve basit bir not alma uygulaması. Next.js, shadcn/ui ve LocalStorage kullanılarak geliştirilmiştir.
+A modern and simple note-taking application built with Next.js, shadcn/ui, and LocalStorage.
 
-## Özellikler
+## ✨ Features
 
-- ✨ Modern ve temiz arayüz
-- 📝 Sınırsız not oluşturma
-- 💾 LocalStorage ile otomatik kaydetme
-- 🎨 shadcn/ui ile güzel tasarım
-- 🚀 Hızlı ve responsive
-- 🌙 Dark mode desteği
+- 📝 **Unlimited Notes** - Create as many notes as you want
+- 💾 **Auto-Save** - All changes are automatically saved to LocalStorage
+- 🔍 **Search** - Search your notes by title and content
+- 🎨 **Modern Interface** - Beautiful and clean design with shadcn/ui
+- 🌙 **Dark/Light Mode** - Toggle between themes (preference is remembered)
+- 📏 **Text Size Settings** - Customize text size (Small, Medium, Large, Extra Large)
+- 📥 **TXT Export** - Download your notes as .txt files
+- 📱 **Responsive Design** - Works perfectly on mobile and desktop
+- 🔄 **Sidebar Toggle** - Open and close the sidebar (preference is remembered)
+- 🗑️ **Note Deletion** - Confirmation dialog before deleting
+- 🏷️ **Dynamic Tab Title** - Selected note title appears in browser tab
 
-## Kullanılan Teknolojiler
+## 🚀 Technologies Used
 
-- [Next.js 15](https://nextjs.org/) - React framework
-- [TypeScript](https://www.typescriptlang.org/) - Tip güvenliği
+- [Next.js 16](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [shadcn/ui](https://ui.shadcn.com/) - UI bileşenleri
-- [Lucide Icons](https://lucide.dev/) - İkonlar
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Lucide Icons](https://lucide.dev/) - Icons
+- [Radix UI](https://www.radix-ui.com/) - Accessible component primitives
 
-## Kurulum
+## 📦 Installation
 
-1. Bağımlılıkları yükleyin:
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Geliştirme sunucusunu başlatın:
+2. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-3. Tarayıcınızda açın:
+3. Open in your browser:
 
 [http://localhost:3000](http://localhost:3000)
 
-## Kullanım
+## 💡 Usage
 
-1. **Yeni Not Oluşturma**: Sol üst köşedeki "Yeni Not" butonuna tıklayın
-2. **Not Düzenleme**: Bir notu seçin ve sağ taraftaki editörde düzenleyin
-3. **Not Silme**: Not üzerine geldiğinizde görünen çöp kutusu ikonuna tıklayın
-4. **Otomatik Kaydetme**: Tüm değişiklikler otomatik olarak LocalStorage'a kaydedilir
+### Basic Operations
 
-## Proje Yapısı
+- **Create New Note**: Click the "New Note" button in the top left
+- **Edit Note**: Select a note and edit it in the editor on the right
+- **Delete Note**: Hover over a note and click the trash icon (confirmation required)
+- **Search Notes**: Type in the search box in the sidebar
+
+### Advanced Features
+
+- **Theme Toggle**: Click the moon/sun icon in the sidebar to switch between dark/light mode
+- **Text Size**: Select text size from the dropdown in the top right (preference is remembered)
+- **Export Note**: Click the download button in the top right to download the note as a .txt file
+- **Sidebar Toggle**: Click the hamburger menu button to open/close the sidebar
+
+### Mobile Usage
+
+- On mobile, the sidebar is closed by default
+- Use the hamburger menu button to open the sidebar
+- Sidebar automatically closes when a note is selected
+
+## 📁 Project Structure
 
 ```
 notes-app/
 ├── app/
-│   ├── layout.tsx        # Ana layout
-│   ├── page.tsx          # Ana sayfa
-│   └── globals.css       # Global stiller
+│   ├── layout.tsx          # Main layout
+│   ├── page.tsx            # Main page
+│   └── globals.css         # Global styles and theme
 ├── components/
-│   ├── NoteSidebar.tsx   # Sol panel (not listesi)
-│   ├── NoteEditor.tsx    # Sağ panel (not editörü)
-│   └── ui/               # shadcn/ui bileşenleri
+│   ├── NoteSidebar.tsx     # Left panel (note list, search)
+│   ├── NoteEditor.tsx      # Right panel (note editor)
+│   └── ui/                 # shadcn/ui components
 ├── hooks/
-│   └── useLocalStorage.ts # LocalStorage hook'u
+│   ├── useLocalStorage.ts  # LocalStorage hook
+│   └── useTheme.ts         # Theme management hook
 ├── types/
-│   └── note.ts           # TypeScript tipleri
+│   └── note.ts             # TypeScript types
 └── lib/
-    └── utils.ts          # Yardımcı fonksiyonlar
+    └── utils.ts            # Utility functions
 ```
 
-## Özelleştirme
+## 🎨 Customization
 
-### Renkler
+### Colors
 
-`app/globals.css` dosyasında CSS değişkenlerini düzenleyerek renk paletini özelleştirebilirsiniz.
+You can customize the color palette by editing CSS variables in `app/globals.css`. Variables are available for both light and dark modes.
 
-### Bileşenler
+### Components
 
-shadcn/ui bileşenleri `components/ui/` klasöründe bulunur ve tamamen özelleştirilebilir.
+shadcn/ui components are located in `components/ui/` and are fully customizable.
 
-## Geliştirme
+## 🛠️ Development
 
 ```bash
-# Geliştirme modu
+# Development mode
 npm run dev
 
 # Production build
 npm run build
 
-# Production sunucusu
+# Production server
 npm start
 
 # Linting
 npm run lint
 ```
 
-## Lisans
+## 📝 Notes
+
+- All data is stored in your browser's LocalStorage
+- Data stays only on your device, nothing is sent to any server
+- If you clear your browser data, your notes will be deleted
+- Your notes won't be visible in different browsers or incognito mode
+
+## 🔒 Privacy
+
+notin works entirely client-side. No data is sent to any server. All your notes are stored only in your browser.
+
+## 📄 License
 
 MIT
 
-## Katkıda Bulunma
+## 🤝 Contributing
 
-Pull request'ler kabul edilir. Büyük değişiklikler için lütfen önce bir issue açın.
+Pull requests are welcome. For major changes, please open an issue first.
+
+## 👤 Author
+
+[kerembeyazit](https://github.com/kerembeyazit)
