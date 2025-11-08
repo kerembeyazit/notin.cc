@@ -8,7 +8,6 @@ export function PWARegister() {
 
     // Check if service worker is supported
     if (!('serviceWorker' in navigator)) {
-      console.warn('Service Worker is not supported in this browser');
       return;
     }
 
@@ -18,10 +17,6 @@ export function PWARegister() {
       location.hostname !== 'localhost' &&
       location.hostname !== '127.0.0.1'
     ) {
-      console.warn(
-        'Service Workers require HTTPS (or localhost). Current protocol:',
-        location.protocol
-      );
       return;
     }
 
@@ -29,23 +24,13 @@ export function PWARegister() {
       navigator.serviceWorker
         .register('/sw.js', { scope: '/' })
         .then((registration) => {
-          console.log(
-            '✅ Service Worker registered successfully:',
-            registration.scope
-          );
-
           // Check for updates
           registration.addEventListener('updatefound', () => {
-            console.log('🔄 Service Worker update found');
+            // Silent update check
           });
         })
-        .catch((error) => {
-          console.error('❌ Service Worker registration failed:', error);
-          console.error('Error details:', {
-            message: error.message,
-            stack: error.stack,
-            browser: navigator.userAgent,
-          });
+        .catch(() => {
+          // Silent fail
         });
     };
 
