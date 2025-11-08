@@ -22,6 +22,7 @@ A modern and simple note-taking application built with Next.js, shadcn/ui, and L
 - 🎯 **Welcome Modal** - Guided introduction for first-time users
 - 📄 **About & Licenses** - View app information and licenses
 - 🎨 **Custom Scrollbars** - Beautiful, minimal scrollbars throughout the app
+- 📱 **Progressive Web App (PWA)** - Install as an app on your device, works offline
 
 ## 🚀 Technologies Used
 
@@ -76,6 +77,29 @@ npm run dev
 - Use the hamburger menu button to open the sidebar
 - Sidebar automatically closes when a note is selected
 
+### Progressive Web App (PWA)
+
+notin can be installed as a Progressive Web App on your device:
+
+**Desktop (Chrome/Edge):**
+1. Click the install icon in the address bar
+2. Or go to Settings → Apps → Install this site as an app
+
+**Mobile (iOS):**
+1. Open the site in Safari
+2. Tap the Share button
+3. Select "Add to Home Screen"
+
+**Mobile (Android):**
+1. Open the site in Chrome
+2. Tap the menu (three dots)
+3. Select "Add to Home Screen" or "Install App"
+
+Once installed, notin will:
+- Open in standalone mode (like a native app)
+- Work offline (with cached content)
+- Have its own app icon on your home screen
+
 ## 📁 Project Structure
 
 ```
@@ -96,6 +120,7 @@ notes-app/
 │   ├── DeleteConfirmModal.tsx # Delete confirmation modal
 │   ├── LicensesModal.tsx   # Licenses modal
 │   ├── LoadingScreen.tsx   # Loading state component
+│   ├── PWARegister.tsx     # Service Worker registration component
 │   └── ui/                 # shadcn/ui components
 │       ├── button.tsx
 │       ├── card.tsx
@@ -117,7 +142,9 @@ notes-app/
 ├── lib/
 │   └── utils.ts            # Utility functions (cn)
 └── public/
-    └── licenses.txt        # Open source licenses
+    ├── licenses.txt        # Open source licenses
+    ├── site.webmanifest    # PWA manifest file
+    └── sw.js               # Service Worker for offline support
 ```
 
 ## 🎨 Customization
@@ -152,6 +179,7 @@ npm run lint
 - Data stays only on your device, nothing is sent to any server
 - If you clear your browser data, your notes will be deleted
 - Your notes won't be visible in different browsers or incognito mode
+- When installed as PWA, the app works offline with cached content
 
 ## 🔒 Privacy
 
