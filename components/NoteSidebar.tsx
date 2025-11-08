@@ -1,11 +1,17 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { Note } from '@/types/note';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useTheme } from '@/hooks/useTheme';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Plus, FileText, Trash2, X, Moon, Sun, Search, List } from 'lucide-react';
@@ -56,6 +62,11 @@ export function NoteSidebar({
     });
   };
 
+  const handleDeleteClick = (e: React.MouseEvent, noteId: string) => {
+    e.stopPropagation();
+    onDeleteNote(noteId);
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -76,38 +87,73 @@ export function NoteSidebar({
       >
         <div className="p-4 border-b flex-shrink-0">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold">notin</h1>
+            <Image 
+              src="/favicon-512.png" 
+              alt="notin" 
+              width={32}
+              height={32}
+              className="h-8 w-8"
+              unoptimized
+            />
             <div className="flex items-center gap-2">
-              <Button onClick={toggleTheme} size="sm" variant="ghost" className="h-8 w-8 p-0">
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </Button>
-              <Button onClick={onNewNote} size="sm">
-                <Plus className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">New Note</span>
-                <span className="sm:hidden">New</span>
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={toggleTheme} size="sm" variant="ghost" className="h-8 w-8 p-0">
+                    {theme === 'dark' ? (
+                      <Sun className="h-4 w-4" />
+                    ) : (
+                      <Moon className="h-4 w-4" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={onNewNote} size="sm">
+                    <Plus className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">New Note</span>
+                    <span className="sm:hidden">New</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Create new note</p>
+                </TooltipContent>
+              </Tooltip>
               {onClose && (
-                <Button onClick={onClose} size="sm" variant="ghost" className="md:hidden">
-                  <X className="h-4 w-4" />
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button onClick={onClose} size="sm" variant="ghost" className="md:hidden">
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Close sidebar</p>
+                  </TooltipContent>
+                </Tooltip>
               )}
             </div>
           </div>
-          <div className="relative mb-3">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search notes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 h-8 text-sm"
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative mb-3">
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search notes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8 h-8 text-sm"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Search notes by title or content</p>
+            </TooltipContent>
+          </Tooltip>
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
               {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
@@ -115,15 +161,21 @@ export function NoteSidebar({
                 <span className="ml-1">of {notes.length}</span>
               )}
             </p>
-            <Button 
-              onClick={() => setIsCompact(!compactValue)} 
-              size="sm" 
-              variant="ghost" 
-              className="h-7 w-7 p-0"
-              title={compactValue ? 'Expand view' : 'Compact view'}
-            >
-              <List className="h-4 w-4" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  onClick={() => setIsCompact(!compactValue)} 
+                  size="sm" 
+                  variant="ghost" 
+                  className="h-7 w-7 p-0"
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{compactValue ? 'Expand view' : 'Compact view'}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
@@ -150,19 +202,21 @@ export function NoteSidebar({
                   <h3 className="text-sm font-medium truncate flex-1 min-w-0">
                     {note.title || 'Untitled Note'}
                   </h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="opacity-0 group-hover:opacity-100 ml-2 h-6 w-6 p-0 flex-shrink-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (window.confirm('Are you sure you want to delete this note?')) {
-                        onDeleteNote(note.id);
-                      }
-                    }}
-                  >
-                    <Trash2 className="h-3 w-3 text-destructive" />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="opacity-0 group-hover:opacity-100 ml-2 h-6 w-6 p-0 flex-shrink-0"
+                        onClick={(e) => handleDeleteClick(e, note.id)}
+                      >
+                        <Trash2 className="h-3 w-3 text-destructive" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Delete note</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               ) : (
                 <Card
@@ -186,19 +240,21 @@ export function NoteSidebar({
                         {formatDate(note.updatedAt)}
                       </p>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="opacity-0 group-hover:opacity-100 ml-2 h-8 w-8 p-0"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (window.confirm('Are you sure you want to delete this note?')) {
-                          onDeleteNote(note.id);
-                        }
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="opacity-0 group-hover:opacity-100 ml-2 h-8 w-8 p-0"
+                          onClick={(e) => handleDeleteClick(e, note.id)}
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Delete note</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </Card>
               )

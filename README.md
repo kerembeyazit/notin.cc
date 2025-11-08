@@ -10,11 +10,18 @@ A modern and simple note-taking application built with Next.js, shadcn/ui, and L
 - 🎨 **Modern Interface** - Beautiful and clean design with shadcn/ui
 - 🌙 **Dark/Light Mode** - Toggle between themes (preference is remembered)
 - 📏 **Text Size Settings** - Customize text size (Small, Medium, Large, Extra Large)
+- 🔤 **Font Family Selection** - Choose between Sans, Serif, or Mono fonts
 - 📥 **TXT Export** - Download your notes as .txt files
 - 📱 **Responsive Design** - Works perfectly on mobile and desktop
 - 🔄 **Sidebar Toggle** - Open and close the sidebar (preference is remembered)
-- 🗑️ **Note Deletion** - Confirmation dialog before deleting
+- 📋 **Compact Mode** - Toggle compact view to see more notes at once
+- 🗑️ **Note Deletion** - Confirmation modal before deleting
 - 🏷️ **Dynamic Tab Title** - Selected note title appears in browser tab
+- 📊 **Note Statistics** - View character count, word count, and last edited date
+- 💬 **Tooltips** - Helpful tooltips on all interactive elements
+- 🎯 **Welcome Modal** - Guided introduction for first-time users
+- 📄 **About & Licenses** - View app information and licenses
+- 🎨 **Custom Scrollbars** - Beautiful, minimal scrollbars throughout the app
 
 ## 🚀 Technologies Used
 
@@ -56,8 +63,12 @@ npm run dev
 
 - **Theme Toggle**: Click the moon/sun icon in the sidebar to switch between dark/light mode
 - **Text Size**: Select text size from the dropdown in the top right (preference is remembered)
+- **Font Family**: Choose your preferred font (Sans, Serif, or Mono) from the dropdown
 - **Export Note**: Click the download button in the top right to download the note as a .txt file
 - **Sidebar Toggle**: Click the hamburger menu button to open/close the sidebar
+- **Compact Mode**: Click the list icon next to the note count to toggle compact view
+- **Note Statistics**: View character count, word count, and last edited date in the footer
+- **About & Licenses**: Click "About" or "Licenses" in the footer to view app information
 
 ### Mobile Usage
 
@@ -70,20 +81,43 @@ npm run dev
 ```
 notes-app/
 ├── app/
-│   ├── layout.tsx          # Main layout
-│   ├── page.tsx            # Main page
-│   └── globals.css         # Global styles and theme
+│   ├── layout.tsx          # Main layout with metadata
+│   ├── page.tsx            # Main page (minimal, delegates to NotesApp)
+│   └── globals.css         # Global styles, theme, and custom scrollbars
 ├── components/
-│   ├── NoteSidebar.tsx     # Left panel (note list, search)
+│   ├── NotesApp.tsx        # Main app component (orchestrates everything)
+│   ├── NoteSidebar.tsx     # Left panel (note list, search, compact mode)
 │   ├── NoteEditor.tsx      # Right panel (note editor)
+│   ├── EditorToolbar.tsx   # Font and text size controls
+│   ├── EditorFooter.tsx    # Footer with stats and links
+│   ├── EmptyNoteView.tsx   # Empty state when no note is selected
+│   ├── WelcomeModal.tsx    # First-time user welcome modal
+│   ├── AboutModal.tsx       # About modal with app info
+│   ├── DeleteConfirmModal.tsx # Delete confirmation modal
+│   ├── LicensesModal.tsx   # Licenses modal
+│   ├── LoadingScreen.tsx   # Loading state component
 │   └── ui/                 # shadcn/ui components
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── input.tsx
+│       ├── textarea.tsx
+│       ├── select.tsx
+│       ├── scroll-area.tsx
+│       ├── tooltip.tsx
+│       └── modal.tsx
 ├── hooks/
 │   ├── useLocalStorage.ts  # LocalStorage hook
-│   └── useTheme.ts         # Theme management hook
+│   ├── useTheme.ts         # Theme management hook
+│   ├── useNotes.ts         # Notes management hook
+│   ├── useDocumentTitle.ts # Document title management
+│   ├── useResponsive.ts    # Responsive behavior hook
+│   └── useEditorSettings.ts # Editor settings (font, text size)
 ├── types/
 │   └── note.ts             # TypeScript types
-└── lib/
-    └── utils.ts            # Utility functions
+├── lib/
+│   └── utils.ts            # Utility functions (cn)
+└── public/
+    └── licenses.txt        # Open source licenses
 ```
 
 ## 🎨 Customization
