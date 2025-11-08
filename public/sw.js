@@ -1,5 +1,5 @@
 // Service Worker for PWA
-const CACHE_NAME = 'notin-v1';
+const CACHE_NAME = 'notin-v2';
 const urlsToCache = [
   '/',
   '/favicon.ico',
