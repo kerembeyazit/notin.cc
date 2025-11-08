@@ -1,10 +1,13 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import { Note } from '@/types/note';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Plus, FileText, Trash2 } from 'lucide-react';
+import { useTheme } from '@/hooks/useTheme';
+import { Plus, FileText, Trash2, X, Moon, Sun, Search } from 'lucide-react';
 
 interface NoteSidebarProps {
   notes: Note[];
@@ -12,6 +15,8 @@ interface NoteSidebarProps {
   onSelectNote: (id: string) => void;
   onNewNote: () => void;
   onDeleteNote: (id: string) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 export function NoteSidebar({
@@ -20,7 +25,24 @@ export function NoteSidebar({
   onSelectNote,
   onNewNote,
   onDeleteNote,
+  isOpen = true,
+  onClose,
 }: NoteSidebarProps) {
+  const { theme, toggleTheme } = useTheme();
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const filteredNotes = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return notes;
+    }
+    const query = searchQuery.toLowerCase();
+    return notes.filter(
+      (note) =>
+        note.title.toLowerCase().includes(query) ||
+        note.content.toLowerCase().includes(query)
+    );
+  }, [notes, searchQuery]);
+  
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -32,30 +54,75 @@ export function NoteSidebar({
   };
 
   return (
-    <div className="w-80 border-r bg-muted/10 flex flex-col h-screen">
-      <div className="p-4 border-b">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">notin</h1>
-          <Button onClick={onNewNote} size="sm">
-            <Plus className="h-4 w-4 mr-1" />
-            New Note
-          </Button>
+    <>
+      {/* Mobile overlay */}
+      {isOpen && onClose && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+      <div 
+        className={`
+          w-80 border-r flex flex-col h-screen
+          fixed inset-y-0 left-0 z-50
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+        style={{ backgroundColor: 'transparent' }}
+      >
+        <div className="p-4 border-b flex-shrink-0">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">notin</h1>
+            <div className="flex items-center gap-2">
+              <Button onClick={toggleTheme} size="sm" variant="ghost" className="h-8 w-8 p-0">
+                {theme === 'dark' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </Button>
+              <Button onClick={onNewNote} size="sm">
+                <Plus className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">New Note</span>
+                <span className="sm:hidden">New</span>
+              </Button>
+              {onClose && (
+                <Button onClick={onClose} size="sm" variant="ghost" className="md:hidden">
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className="relative mb-3">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search notes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 h-8 text-sm"
+              style={{ backgroundColor: 'transparent' }}
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
+            {searchQuery && filteredNotes.length !== notes.length && (
+              <span className="ml-1">of {notes.length}</span>
+            )}
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {notes.length} {notes.length === 1 ? 'note' : 'notes'}
-        </p>
-      </div>
 
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 h-0">
         <div className="p-2 space-y-2">
-          {notes.length === 0 ? (
+          {filteredNotes.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
-              <p>No notes yet</p>
-              <p className="text-sm">Create your first note</p>
+              <p>{searchQuery ? 'No notes found' : 'No notes yet'}</p>
+              <p className="text-sm">{searchQuery ? 'Try a different search' : 'Create your first note'}</p>
             </div>
           ) : (
-            notes.map((note) => (
+            filteredNotes.map((note) => (
               <Card
                 key={note.id}
                 className={`p-3 cursor-pointer transition-all hover:shadow-md group ${
@@ -83,7 +150,9 @@ export function NoteSidebar({
                     className="opacity-0 group-hover:opacity-100 ml-2 h-8 w-8 p-0"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onDeleteNote(note.id);
+                      if (window.confirm('Are you sure you want to delete this note?')) {
+                        onDeleteNote(note.id);
+                      }
                     }}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
@@ -95,6 +164,7 @@ export function NoteSidebar({
         </div>
       </ScrollArea>
     </div>
+    </>
   );
 }
 
