@@ -20,13 +20,34 @@ export function PWARegister() {
       return;
     }
 
+    let updateInterval: NodeJS.Timeout | null = null;
+
     const registerServiceWorker = () => {
       navigator.serviceWorker
-        .register('/sw.js', { scope: '/' })
+        .register('/sw.js', { 
+          scope: '/',
+          updateViaCache: 'none' // Always check for updates
+        })
         .then((registration) => {
-          // Check for updates
+          // Check for updates immediately
+          registration.update();
+          
+          // Check for updates periodically (every 5 minutes)
+          updateInterval = setInterval(() => {
+            registration.update();
+          }, 5 * 60 * 1000);
+          
+          // Listen for new service worker
           registration.addEventListener('updatefound', () => {
-            // Silent update check
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New service worker is ready, reload page to activate it
+                  window.location.reload();
+                }
+              });
+            }
           });
         })
         .catch(() => {
@@ -44,6 +65,9 @@ export function PWARegister() {
     // Cleanup
     return () => {
       window.removeEventListener('load', registerServiceWorker);
+      if (updateInterval) {
+        clearInterval(updateInterval);
+      }
     };
   }, []);
 
