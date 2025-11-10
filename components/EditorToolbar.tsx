@@ -65,12 +65,12 @@ export function EditorToolbar({
     : 0;
 
   return (
-    <div className="absolute top-4 right-4 md:top-6 md:right-4 flex items-center gap-2 z-10">
+    <div className="absolute top-2 right-4 md:top-6 md:right-4 flex items-center gap-2 z-10">
       {note && (
         <>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="text-xs text-muted-foreground mr-2">
+              <div className="hidden sm:block text-xs text-muted-foreground mr-2">
                 {charCount.toLocaleString()} chars, {wordCount.toLocaleString()} words
               </div>
             </TooltipTrigger>

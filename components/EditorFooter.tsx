@@ -16,7 +16,6 @@ interface EditorFooterProps {
 export function EditorFooter({}: EditorFooterProps) {
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
 
-
   return (
     <>
       <AboutModal isOpen={aboutModalOpen} onClose={() => setAboutModalOpen(false)} />
