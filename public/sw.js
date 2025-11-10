@@ -1,6 +1,6 @@
 // Service Worker for PWA
 // Cache version - update this on each deploy to force cache refresh
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `notin-${CACHE_VERSION}`;
 const urlsToCache = [
   '/',
