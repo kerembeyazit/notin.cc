@@ -181,7 +181,7 @@ export function NoteSidebar({
         </div>
 
       <ScrollArea className="flex-1 min-h-0">
-        <div className={`p-2 ${compactValue ? 'space-y-1' : 'space-y-2'} w-full`}>
+        <div className={`p-2 ${compactValue ? 'space-y-1' : 'space-y-2'} w-full max-w-full overflow-hidden`}>
           {filteredNotes.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -193,14 +193,14 @@ export function NoteSidebar({
               compactValue ? (
                 <div
                   key={note.id}
-                  className={`py-1.5 px-2 rounded cursor-pointer transition-colors group flex items-center justify-between ${
+                  className={`py-1.5 px-2 rounded cursor-pointer transition-colors group flex items-center justify-between gap-2 min-w-0 w-full max-w-full overflow-hidden ${
                     selectedNoteId === note.id
                       ? 'bg-muted/50'
                       : 'hover:bg-muted/30'
                   }`}
                   onClick={() => onSelectNote(note.id)}
                 >
-                  <h3 className="text-sm font-medium truncate flex-1 min-w-0">
+                  <h3 className="text-sm font-medium truncate flex-1 min-w-0 w-0 max-w-full overflow-hidden">
                     {note.title || 'Untitled Note'}
                   </h3>
                   <Tooltip>
@@ -229,9 +229,9 @@ export function NoteSidebar({
                   }`}
                   onClick={() => onSelectNote(note.id)}
                 >
-                  <div className="flex items-start justify-between gap-2 min-w-0 w-full">
-                    <div className="flex-1 min-w-0 overflow-hidden">
-                      <h3 className="font-medium truncate mb-1">
+                  <div className="flex items-start justify-between gap-2 min-w-0 w-full overflow-hidden">
+                    <div className="flex-1 min-w-0 w-0 max-w-full overflow-hidden">
+                      <h3 className="font-medium truncate mb-1 max-w-full overflow-hidden whitespace-nowrap">
                         {note.title || 'Untitled Note'}
                       </h3>
                       <p className="text-xs text-muted-foreground break-words line-clamp-2 overflow-hidden">

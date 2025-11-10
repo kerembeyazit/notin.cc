@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import packageJson from '@/package.json';
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
             Features include dark mode, customizable fonts, search, and export.
           </p>
           <p className="text-sm font-semibold mb-2">Version</p>
-          <p className="text-sm text-muted-foreground">0.3.0</p>
+          <p className="text-sm text-muted-foreground">{packageJson.version}</p>
         </div>
 
         <div className="pt-4 border-t">
