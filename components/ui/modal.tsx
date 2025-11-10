@@ -26,9 +26,9 @@ export function Modal({ isOpen, onClose, title, children, showCloseButton = true
         className="fixed inset-0 bg-black/50 backdrop-blur-md"
         onClick={onClose}
       />
-      <Card className="relative z-[100] w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <Card className="relative z-[100] w-full max-w-lg p-6 max-h-[90vh] flex flex-col min-h-0 overflow-hidden">
         {(title || showCloseButton) && (
-          <div className={`flex items-center ${title ? 'justify-between' : 'justify-end'} mb-4`}>
+          <div className={`flex items-center ${title ? 'justify-between' : 'justify-end'} mb-4 flex-shrink-0`}>
             {title && <h2 className="text-2xl font-bold">{title}</h2>}
             {showCloseButton && (
               <Tooltip>
@@ -49,7 +49,9 @@ export function Modal({ isOpen, onClose, title, children, showCloseButton = true
             )}
           </div>
         )}
-        {children}
+        <div className="flex-1 min-h-0">
+          {children}
+        </div>
       </Card>
     </div>
   );

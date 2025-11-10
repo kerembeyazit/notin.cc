@@ -103,7 +103,7 @@ export function LicensesModal({ isOpen, onClose }: LicensesModalProps) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Licenses">
-      <ScrollArea className="max-h-[60vh]">
+      <ScrollArea className="h-full min-h-0">
         <div className="pr-4">
           {loading ? (
             <p className="text-muted-foreground">Loading licenses...</p>
