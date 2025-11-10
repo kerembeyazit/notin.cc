@@ -6,7 +6,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useState, useMemo } from 'react';
-import { LicensesModal } from '@/components/LicensesModal';
 import { AboutModal } from '@/components/AboutModal';
 import { Note } from '@/types/note';
 
@@ -15,7 +14,6 @@ interface EditorFooterProps {
 }
 
 export function EditorFooter({ note }: EditorFooterProps) {
-  const [licensesModalOpen, setLicensesModalOpen] = useState(false);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
 
   const stats = useMemo(() => {
@@ -41,7 +39,6 @@ export function EditorFooter({ note }: EditorFooterProps) {
   return (
     <>
       <AboutModal isOpen={aboutModalOpen} onClose={() => setAboutModalOpen(false)} />
-      <LicensesModal isOpen={licensesModalOpen} onClose={() => setLicensesModalOpen(false)} />
       <div className="mt-4 flex items-center justify-between gap-3 text-xs text-muted-foreground flex-shrink-0">
         {note && stats && (
           <div className="flex items-center gap-4">
@@ -66,12 +63,14 @@ export function EditorFooter({ note }: EditorFooterProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <button
-                onClick={() => setLicensesModalOpen(true)}
+              <a
+                href="/licenses.txt"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-foreground transition-colors underline"
               >
                 Licenses
-              </button>
+              </a>
             </TooltipTrigger>
             <TooltipContent>
               <p>View licenses</p>
