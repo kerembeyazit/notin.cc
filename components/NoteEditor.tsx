@@ -59,14 +59,14 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen p-3 relative bg-background">
+    <div className="flex-1 flex flex-col h-screen p-3 relative bg-background min-h-0 overflow-hidden">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
             onClick={onToggleSidebar}
             variant="ghost"
             size="sm"
-            className="mb-2 self-start"
+            className="mb-2 self-start flex-shrink-0"
           >
             <Menu className="h-5 w-5" />
           </Button>
@@ -82,18 +82,18 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
         onFontFamilyChange={setFontFamily}
         onExport={handleExportTxt}
       />
-      <Card className="flex-1 flex flex-col p-4 border-0 shadow-none relative bg-transparent md:bg-transparent">
+      <Card className="flex-1 flex flex-col p-4 border-0 shadow-none relative bg-transparent md:bg-transparent min-h-0 overflow-hidden">
         <Input
           value={note.title}
           onChange={handleTitleChange}
           placeholder="Note title..."
-          className="text-2xl md:text-3xl font-semibold border-0 focus-visible:ring-0 px-0 mb-4 shadow-none pr-32 !bg-transparent dark:!bg-transparent"
+          className="text-2xl md:text-3xl font-semibold border-0 focus-visible:ring-0 px-0 mb-4 shadow-none pr-32 !bg-transparent dark:!bg-transparent flex-shrink-0"
         />
         <Textarea
           value={note.content}
           onChange={handleContentChange}
           placeholder="Write your note here..."
-          className="flex-1 resize-none border-0 focus-visible:ring-0 px-0 shadow-none !bg-transparent dark:!bg-transparent"
+          className="flex-1 resize-none border-0 focus-visible:ring-0 px-0 shadow-none !bg-transparent dark:!bg-transparent overflow-auto min-h-0"
           style={{ 
             fontSize: currentTextSize.size,
             fontFamily: currentFontFamily.family,

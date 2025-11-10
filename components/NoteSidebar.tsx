@@ -82,6 +82,7 @@ export function NoteSidebar({
           fixed inset-y-0 left-0 z-50
           transform transition-transform duration-300 ease-in-out
           bg-background md:bg-transparent
+          min-h-0 overflow-hidden
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
@@ -179,8 +180,8 @@ export function NoteSidebar({
           </div>
         </div>
 
-      <ScrollArea className="flex-1 h-0">
-        <div className={`p-2 ${compactValue ? 'space-y-1' : 'space-y-2'}`}>
+      <ScrollArea className="flex-1 min-h-0">
+        <div className={`p-2 ${compactValue ? 'space-y-1' : 'space-y-2'} w-full`}>
           {filteredNotes.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -221,19 +222,19 @@ export function NoteSidebar({
               ) : (
                 <Card
                   key={note.id}
-                  className={`p-3 cursor-pointer transition-all hover:shadow-md group ${
+                  className={`p-3 cursor-pointer transition-all hover:shadow-md group overflow-hidden w-full max-w-full ${
                     selectedNoteId === note.id
                       ? 'border-primary bg-primary/5'
                       : 'hover:bg-muted/50'
                   }`}
                   onClick={() => onSelectNote(note.id)}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 min-w-0 w-full">
+                    <div className="flex-1 min-w-0 overflow-hidden">
                       <h3 className="font-medium truncate mb-1">
                         {note.title || 'Untitled Note'}
                       </h3>
-                      <p className="text-xs text-muted-foreground truncate">
+                      <p className="text-xs text-muted-foreground break-words line-clamp-2 overflow-hidden">
                         {note.content || 'No content'}
                       </p>
                       <p className="text-xs text-muted-foreground mt-2">

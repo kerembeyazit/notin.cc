@@ -42,7 +42,7 @@ export function EditorFooter({ note }: EditorFooterProps) {
     <>
       <AboutModal isOpen={aboutModalOpen} onClose={() => setAboutModalOpen(false)} />
       <LicensesModal isOpen={licensesModalOpen} onClose={() => setLicensesModalOpen(false)} />
-      <div className="mt-4 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+      <div className="mt-4 flex items-center justify-between gap-3 text-xs text-muted-foreground flex-shrink-0">
         {note && stats && (
           <div className="flex items-center gap-4">
             <span>{stats.charCount.toLocaleString()} characters</span>
