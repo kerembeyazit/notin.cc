@@ -15,6 +15,7 @@ import {
 import { useTheme } from '@/hooks/useTheme';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Plus, FileText, Trash2, X, Moon, Sun, Search, List } from 'lucide-react';
+import { AboutModal } from '@/components/AboutModal';
 
 interface NoteSidebarProps {
   notes: Note[];
@@ -38,6 +39,7 @@ export function NoteSidebar({
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [isCompact, setIsCompact] = useLocalStorage<boolean>('compactMode', false);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
   const compactValue = typeof isCompact === 'boolean' ? isCompact : false;
   
   const filteredNotes = useMemo(() => {
@@ -69,6 +71,7 @@ export function NoteSidebar({
 
   return (
     <>
+      <AboutModal isOpen={aboutModalOpen} onClose={() => setAboutModalOpen(false)} />
       {/* Mobile overlay */}
       {isOpen && onClose && (
         <div 
@@ -88,14 +91,26 @@ export function NoteSidebar({
       >
         <div className="p-4 border-b flex-shrink-0">
           <div className="flex items-center justify-between mb-4">
-            <Image 
-              src="/favicon-512.png" 
-              alt="notin" 
-              width={32}
-              height={32}
-              className="h-8 w-8"
-              unoptimized
-            />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => setAboutModalOpen(true)}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                >
+                  <Image 
+                    src="/favicon-512.png" 
+                    alt="notin" 
+                    width={32}
+                    height={32}
+                    className="h-8 w-8"
+                    unoptimized
+                  />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>About notin</p>
+              </TooltipContent>
+            </Tooltip>
             <div className="flex items-center gap-2">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -148,16 +163,17 @@ export function NoteSidebar({
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-8 h-8 text-sm"
                   style={{ backgroundColor: 'transparent' }}
+                  disabled={notes.length === 0}
                 />
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Search notes by title or content</p>
+              <p>{notes.length === 0 ? 'Create a note first' : 'Search notes by title or content'}</p>
             </TooltipContent>
           </Tooltip>
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
+              {filteredNotes.length > 0 ? filteredNotes.length + " note(s)" : "No notes"}
               {searchQuery && filteredNotes.length !== notes.length && (
                 <span className="ml-1">of {notes.length}</span>
               )}
@@ -173,7 +189,7 @@ export function NoteSidebar({
                   <List className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="left" sideOffset={8}>
                 <p>{compactValue ? 'Expand view' : 'Compact view'}</p>
               </TooltipContent>
             </Tooltip>
@@ -181,7 +197,7 @@ export function NoteSidebar({
         </div>
 
       <ScrollArea className="flex-1 min-h-0">
-        <div className={`p-2 ${compactValue ? 'space-y-1' : 'space-y-2'} w-full max-w-full overflow-hidden`}>
+        <div className={`px-4 py-2 ${compactValue ? 'space-y-1' : 'space-y-2'} w-full max-w-full overflow-hidden`}>
           {filteredNotes.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -193,7 +209,7 @@ export function NoteSidebar({
               compactValue ? (
                 <div
                   key={note.id}
-                  className={`py-1.5 px-2 rounded cursor-pointer transition-colors group flex items-center justify-between gap-2 min-w-0 w-full max-w-full overflow-hidden ${
+                  className={`py-1.5 cursor-pointer transition-colors group flex items-center justify-between gap-2 min-w-0 w-full max-w-full overflow-hidden ${
                     selectedNoteId === note.id
                       ? 'bg-muted/50'
                       : 'hover:bg-muted/30'
@@ -222,9 +238,9 @@ export function NoteSidebar({
               ) : (
                 <Card
                   key={note.id}
-                  className={`p-3 cursor-pointer transition-all hover:shadow-md group overflow-hidden w-full max-w-full ${
+                  className={`px-4 py-3 cursor-pointer transition-all hover:shadow-md group overflow-hidden w-full max-w-full rounded-none border-0 ${
                     selectedNoteId === note.id
-                      ? 'border-primary bg-primary/5'
+                      ? 'bg-primary/5 border-l-2 border-l-primary/30'
                       : 'hover:bg-muted/50'
                   }`}
                   onClick={() => onSelectNote(note.id)}

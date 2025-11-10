@@ -101,6 +101,7 @@ export function NotesApp({ isLoaded }: NotesAppProps) {
             note={selectedNote} 
             onUpdateNote={updateNote}
             onToggleSidebar={() => setIsSidebarOpen(!sidebarValue)}
+            isSidebarOpen={sidebarValue}
           />
         </div>
       </div>

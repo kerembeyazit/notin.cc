@@ -62,7 +62,39 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
                 <p>View on GitHub</p>
               </TooltipContent>
             </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="/licenses.txt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm hover:text-foreground transition-colors"
+                >
+                  <span>Licenses</span>
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View licenses</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
+        </div>
+
+        <div className="pt-4 border-t">
+          <a 
+            href="https://www.producthunt.com/products/notin-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-notin&#0045;2" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block"
+          >
+            <img 
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1035835&theme=light&t=1762772860075" 
+              alt="notin - notin&#0032;is&#0032;simple&#0032;note&#0032;app&#0032;and&#0032;works&#0032;entirely&#0032;in&#0032;your&#0032;browser&#0046; | Product Hunt" 
+              style={{ width: '250px', height: '54px' }} 
+              width="250" 
+              height="54" 
+            />
+          </a>
         </div>
       </div>
     </Modal>

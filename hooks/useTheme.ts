@@ -1,13 +1,36 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
 type Theme = 'light' | 'dark';
 
 export function useTheme() {
-  const [theme, setTheme] = useLocalStorage<Theme>('theme', 'light');
-  const themeValue = theme || 'light';
+  const [theme, setTheme] = useLocalStorage<Theme | null>('theme', null);
+  const [systemTheme, setSystemTheme] = useState<Theme>('light');
+
+  // Get system preference
+  useEffect(() => {
+    const getSystemTheme = (): Theme => {
+      if (typeof window !== 'undefined') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return 'light';
+    };
+
+    setSystemTheme(getSystemTheme());
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? 'dark' : 'light');
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Use system theme if no user preference is set
+  const themeValue = theme || systemTheme;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -20,7 +43,8 @@ export function useTheme() {
   }, [themeValue]);
 
   const toggleTheme = () => {
-    const newTheme = themeValue === 'light' ? 'dark' : 'light';
+    const currentTheme = theme || systemTheme;
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
   };
 

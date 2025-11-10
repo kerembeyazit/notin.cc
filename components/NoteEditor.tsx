@@ -12,24 +12,20 @@ import {
 } from '@/components/ui/tooltip';
 import { useEditorSettings } from '@/hooks/useEditorSettings';
 import { EditorToolbar } from '@/components/EditorToolbar';
-import { EditorFooter } from '@/components/EditorFooter';
-import { EmptyNoteView } from '@/components/EmptyNoteView';
-import { Menu } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 interface NoteEditorProps {
   note: Note | null;
   onUpdateNote: (note: Note) => void;
   onToggleSidebar?: () => void;
+  isSidebarOpen?: boolean;
 }
 
-export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorProps) {
+export function NoteEditor({ note, onUpdateNote, onToggleSidebar, isSidebarOpen = true }: NoteEditorProps) {
   const { textSize, fontFamily, setTextSize, setFontFamily, currentTextSize, currentFontFamily } = useEditorSettings();
 
-  if (!note) {
-    return <EmptyNoteView onToggleSidebar={onToggleSidebar} />;
-  }
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!note) return;
     onUpdateNote({
       ...note,
       title: e.target.value,
@@ -38,6 +34,7 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (!note) return;
     onUpdateNote({
       ...note,
       content: e.target.value,
@@ -46,6 +43,7 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
   };
 
   const handleExportTxt = () => {
+    if (!note) return;
     const content = `${note.title || 'Untitled Note'}\n\n${note.content}`;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -59,16 +57,20 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen p-3 relative bg-background min-h-0 overflow-hidden">
+    <div className="flex-1 flex flex-col h-screen pt-3 pb-0 relative bg-background min-h-0 overflow-hidden">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
             onClick={onToggleSidebar}
             variant="ghost"
             size="sm"
-            className="mb-2 self-start flex-shrink-0"
+            className="mb-2 self-start flex-shrink-0 ml-2 px-0"
           >
-            <Menu className="h-5 w-5" />
+            {isSidebarOpen ? (
+              <PanelLeftClose className="h-5 w-5" />
+            ) : (
+              <PanelLeftOpen className="h-5 w-5" />
+            )}
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -81,26 +83,36 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar }: NoteEditorPr
         onTextSizeChange={setTextSize}
         onFontFamilyChange={setFontFamily}
         onExport={handleExportTxt}
+        note={note}
       />
-      <Card className="flex-1 flex flex-col p-4 border-0 shadow-none relative bg-transparent md:bg-transparent min-h-0 overflow-hidden">
-        <Input
-          value={note.title}
-          onChange={handleTitleChange}
-          placeholder="Note title..."
-          className="text-2xl md:text-3xl font-semibold border-0 focus-visible:ring-0 px-0 mb-4 shadow-none pr-32 !bg-transparent dark:!bg-transparent flex-shrink-0"
-        />
-        <Textarea
-          value={note.content}
-          onChange={handleContentChange}
-          placeholder="Write your note here..."
-          className="flex-1 resize-none border-0 focus-visible:ring-0 px-0 shadow-none !bg-transparent dark:!bg-transparent overflow-auto min-h-0"
-          style={{ 
-            fontSize: currentTextSize.size,
-            fontFamily: currentFontFamily.family,
-          }}
-        />
+      <Card className="flex-1 flex flex-col px-4 pb-0 border-0 shadow-none relative bg-transparent md:bg-transparent min-h-0 overflow-hidden h-full">
+        {note ? (
+          <>
+            <Input
+              value={note.title}
+              onChange={handleTitleChange}
+              placeholder="Note title..."
+              className="text-xl md:text-2xl font-semibold border-0 focus-visible:ring-0 mb-1 shadow-none pr-32 !bg-transparent dark:!bg-transparent flex-shrink-0 rounded-none px-0"
+            />
+            <Textarea
+              value={note.content}
+              onChange={handleContentChange}
+              placeholder="Write your note here..."
+              className="flex-1 resize-none border-0 focus-visible:ring-0 shadow-none !bg-transparent dark:!bg-transparent overflow-auto min-h-0 px-0 h-full"
+              style={{ 
+                fontSize: currentTextSize.size,
+                fontFamily: currentFontFamily.family,
+              }}
+            />
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center text-muted-foreground">
+              <p className="text-lg">Select a note or create a new one</p>
+            </div>
+          </div>
+        )}
       </Card>
-      <EditorFooter note={note} />
     </div>
   );
 }
