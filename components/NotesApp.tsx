@@ -28,6 +28,7 @@ export function NotesApp({ isLoaded }: NotesAppProps) {
 
   const { isDesktop, isSidebarOpen, setIsSidebarOpen } = useResponsive();
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
+  const [hasSeenStorageWarning, setHasSeenStorageWarning] = useLocalStorage<boolean>('hasSeenStorageWarning', false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState<{ id: string; title: string } | null>(null);
 
@@ -59,8 +60,10 @@ export function NotesApp({ isLoaded }: NotesAppProps) {
 
   const sidebarValue = typeof isSidebarOpen === 'boolean' ? isSidebarOpen : true;
   const hasSeenWelcomeValue = typeof hasSeenWelcome === 'boolean' ? hasSeenWelcome : false;
+  const hasSeenStorageWarningValue = typeof hasSeenStorageWarning === 'boolean' ? hasSeenStorageWarning : false;
   const showWelcome = isLoaded && !hasSeenWelcomeValue;
   const showSidebar = !showWelcome;
+  const showStorageWarning = isLoaded && !hasSeenStorageWarningValue;
 
   return (
     <>
@@ -88,6 +91,8 @@ export function NotesApp({ isLoaded }: NotesAppProps) {
               onDeleteNote={handleDeleteClick}
               isOpen={sidebarValue}
               onClose={() => setIsSidebarOpen(false)}
+              showStorageWarning={showStorageWarning}
+              onCloseStorageWarning={() => setHasSeenStorageWarning(true)}
             />
           </div>
         )}

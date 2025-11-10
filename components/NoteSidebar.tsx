@@ -16,6 +16,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Plus, FileText, Trash2, X, Moon, Sun, Search, List } from 'lucide-react';
 import { AboutModal } from '@/components/AboutModal';
+import { StorageWarningBanner } from '@/components/StorageWarningBanner';
 
 interface NoteSidebarProps {
   notes: Note[];
@@ -25,6 +26,8 @@ interface NoteSidebarProps {
   onDeleteNote: (id: string) => void;
   isOpen?: boolean;
   onClose?: () => void;
+  showStorageWarning?: boolean;
+  onCloseStorageWarning?: () => void;
 }
 
 export function NoteSidebar({
@@ -35,6 +38,8 @@ export function NoteSidebar({
   onDeleteNote,
   isOpen = true,
   onClose,
+  showStorageWarning = false,
+  onCloseStorageWarning,
 }: NoteSidebarProps) {
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
@@ -152,6 +157,12 @@ export function NoteSidebar({
               )}
             </div>
           </div>
+          {showStorageWarning && onCloseStorageWarning && (
+            <StorageWarningBanner
+              isVisible={showStorageWarning}
+              onClose={onCloseStorageWarning}
+            />
+          )}
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="relative mb-3">
@@ -216,7 +227,7 @@ export function NoteSidebar({
                   }`}
                   onClick={() => onSelectNote(note.id)}
                 >
-                  <h3 className="text-sm font-medium truncate flex-1 min-w-0 w-0 max-w-full overflow-hidden">
+                  <h3 className="text-sm font-medium truncate flex-1 min-w-0 w-0 pl-2 max-w-full overflow-hidden">
                     {note.title || 'Untitled Note'}
                   </h3>
                   <Tooltip>
