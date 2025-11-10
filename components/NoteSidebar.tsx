@@ -227,7 +227,7 @@ export function NoteSidebar({
                   }`}
                   onClick={() => onSelectNote(note.id)}
                 >
-                  <h3 className="text-sm font-medium truncate flex-1 min-w-0 w-0 pl-2 max-w-full overflow-hidden">
+                  <h3 className="text-sm font-medium truncate flex-1 min-w-0 w-0 pl-3 pr-3 max-w-full overflow-hidden">
                     {note.title || 'Untitled Note'}
                   </h3>
                   <Tooltip>

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useEditorSettings } from '@/hooks/useEditorSettings';
 import { EditorToolbar } from '@/components/EditorToolbar';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { FileText, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 interface NoteEditorProps {
   note: Note | null;
@@ -108,6 +108,7 @@ export function NoteEditor({ note, onUpdateNote, onToggleSidebar, isSidebarOpen 
         ) : (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center text-muted-foreground">
+              <FileText className="h-16 w-16 mx-auto mb-4 opacity-30" />
               <p className="text-lg">Select a note or create a new one</p>
             </div>
           </div>
